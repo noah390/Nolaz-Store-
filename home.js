@@ -81,7 +81,10 @@ function createProductCard(product) {
   const price = product.price ? `₦${parseInt(product.price).toLocaleString()}` : 'Price on request';
   
   div.innerHTML = `
-    <img src="${imageUrl}" alt="${product.name}" loading="lazy">
+    <div class="card-image">
+      <img src="${imageUrl}" alt="${product.name}" loading="lazy">
+      <div class="card-badge">Featured</div>
+    </div>
     <div class="card-content">
       <h3>${product.name}</h3>
       <p class="desc">${product.description || 'No description available'}</p>
