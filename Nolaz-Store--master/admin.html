@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nolaz Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="admin-container">
+<div class="admin-header">
+<h2>Nolaz Store Admin</h2>
+<p>Manage your products and inventory</p>
+<a href="home.html" class="btn" style="margin-top: 16px;">← Back to Store</a>
+</div>
+
+<div id="loginPanel">
+<h3 style="text-align: center; margin-bottom: 24px;">Admin Login</h3>
+<div class="form-group">
+<label for="adminPass">Admin Password</label>
+<input id="adminPass" type="password" placeholder="Enter admin password">
+</div>
+<button id="loginBtn" class="btn btn-success" style="width: 100%;">Login</button>
+</div>
+
+<div id="adminArea" style="display:none;">
+<div class="admin-nav">
+<button id="addProductBtn" class="btn btn-success">Add New Product</button>
+<button id="viewProductsBtn" class="btn">View All Products</button>
+<button id="logoutBtn" class="btn" style="background: #ef4444;">Logout</button>
+</div>
+
+<div id="addProductSection">
+<h3>Add New Product</h3>
+<form id="productForm">
+<div class="form-group">
+<label for="name">Product Name *</label>
+<input id="name" type="text" placeholder="Enter product name" required>
+</div>
+
+<div class="form-group">
+<label for="price">Price (₦) *</label>
+<input id="price" type="number" placeholder="Enter price" required>
+</div>
+
+<div class="form-group">
+<label for="description">Description</label>
+<textarea id="description" placeholder="Enter product description"></textarea>
+</div>
+
+<div class="form-group">
+<label for="category">Category</label>
+<input id="category" type="text" placeholder="e.g., Shirts, Dresses, Accessories">
+</div>
+
+<div class="form-group">
+<label for="imageFile">Product Image</label>
+<div id="currentImage" style="display: none; margin-bottom: 8px;">
+<img id="currentImagePreview" src="" alt="Current image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+<p style="margin: 4px 0; font-size: 14px; color: var(--muted);">Current image (leave empty to keep)</p>
+</div>
+<input id="imageFile" type="file" accept="image/*">
+<small style="color: var(--muted);">Recommended: 400x300px or larger, JPG/PNG format</small>
+</div>
+
+<div class="form-group">
+<label for="status">Status</label>
+<select id="status">
+<option value="active">Active</option>
+<option value="inactive">Inactive</option>
+</select>
+</div>
+
+<button type="submit" class="btn btn-success" style="width: 100%;">Add Product</button>
+</form>
+</div>
+
+<div id="viewProductsSection" style="display: none;">
+<h3>All Products</h3>
+<div id="productsTable">Loading products...</div>
+</div>
+
+<div id="status"></div>
+
+<div style="background: #f8fafc; padding: 24px; border-radius: 12px; margin-top: 32px;">
+<h4 style="margin: 0 0 16px;">Setup Instructions</h4>
+<ol style="margin: 0; padding-left: 20px; color: var(--muted);">
+<li>Create a Google Sheet with columns: id, name, price, description, category, image, status</li>
+<li>Deploy the provided Google Apps Script as a web app</li>
+<li>Set up Cloudinary account for image hosting</li>
+<li>Update configuration in admin.js</li>
+<li>Publish your Google Sheet as CSV for the main store</li>
+</ol>
+</div>
+</div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>

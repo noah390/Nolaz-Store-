@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nolaz Store - Home</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+<div class="header-content">
+<div class="brand">
+<h1>Nolaz Store</h1>
+</div>
+<button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+<nav class="main-nav" id="mainNav">
+<a href="home.html" class="active">Home</a>
+<a href="shop.html">Shop</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+</nav>
+<div class="header-actions">
+<button id="cartBtn" class="cart-btn">
+Cart (<span id="cartCount">0</span>)
+</button>
+<a href="admin.html" class="btn">Login</a>
+</div>
+</div>
+</header>
+
+<main class="container">
+<section class="hero section">
+<h2>Redefining Contemporary Fashion</h2>
+<p>Discover our curated collection of minimal, modern pieces designed for the contemporary lifestyle. Experience fashion that speaks to your individuality.</p>
+<div class="hero-actions">
+<a href="shop.html" class="btn btn-primary">Explore Collection</a>
+<a href="about.html" class="btn btn-outline">Our Story</a>
+</div>
+</section>
+
+<section class="slider-section section">
+<div class="section-header">
+<h3 class="section-title">Experience Nolaz</h3>
+<p class="section-subtitle">Discover our latest jewelry and clothing collection</p>
+</div>
+<div class="image-slider">
+<div class="slider-container">
+<div class="slide active">
+<img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=1200&h=400&fit=crop&crop=center" alt="Premium Clothing">
+<div class="slide-overlay">
+<h4>Premium Clothing</h4>
+<p>Discover our exclusive fashion collection</p>
+</div>
+</div>
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&h=400&fit=crop&crop=center" alt="Luxury Jewelry">
+<div class="slide-overlay">
+<h4>Luxury Jewelry</h4>
+<p>Elegant pieces for every occasion</p>
+</div>
+</div>
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=400&fit=crop&crop=center" alt="Fashion Accessories">
+<div class="slide-overlay">
+<h4>Fashion Accessories</h4>
+<p>Complete your look with style</p>
+</div>
+</div>
+</div>
+<div class="slider-nav">
+<button class="nav-dot active" onclick="currentSlide(1)"></button>
+<button class="nav-dot" onclick="currentSlide(2)"></button>
+<button class="nav-dot" onclick="currentSlide(3)"></button>
+</div>
+</div>
+</section>
+
+<section class="features section">
+<div class="section-header">
+<h3 class="section-title">Why Choose Nolaz</h3>
+<p class="section-subtitle">Experience the difference with our premium service</p>
+</div>
+<div class="feature-grid">
+<div class="feature-card">
+<div class="feature-icon"></div>
+<h4>Premium Quality</h4>
+<p>Carefully curated pieces made from the finest materials with attention to every detail</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"></div>
+<h4>Express Delivery</h4>
+<p>Fast and reliable delivery across Nigeria with real-time tracking</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"></div>
+<h4>24/7 Support</h4>
+<p>Dedicated customer support via WhatsApp for instant assistance</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon"></div>
+<h4>Easy Returns</h4>
+<p>Hassle-free returns within 7 days for your peace of mind</p>
+</div>
+</div>
+</section>
+
+<section class="featured-products section">
+<div class="section-header">
+<h3 class="section-title">Featured Collection</h3>
+<p class="section-subtitle">Handpicked pieces from our latest arrivals</p>
+</div>
+<div id="featuredProducts" class="products-grid">
+<!-- Featured products will be loaded here -->
+</div>
+<div class="text-center">
+<a href="shop.html" class="btn btn-primary">View Full Collection</a>
+</div>
+</section>
+
+<section class="image-ads-section section">
+<div class="section-header">
+<h3 class="section-title">Trending Now</h3>
+<p class="section-subtitle">Discover what's hot in fashion and jewelry</p>
+</div>
+<div class="ads-grid">
+<div class="ad-card clothing-ad">
+<img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&h=400&fit=crop&crop=center" alt="Premium Clothing Collection">
+<div class="ad-overlay">
+<h4>Premium Clothing</h4>
+<p>Discover our exclusive collection</p>
+<a href="shop.html" class="ad-btn">Shop Now</a>
+</div>
+</div>
+<div class="ad-card jewelry-ad">
+<img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=400&fit=crop&crop=center" alt="Luxury Jewelry Collection">
+<div class="ad-overlay">
+<h4>Luxury Jewelry</h4>
+<p>Elegant pieces for every occasion</p>
+<a href="shop.html" class="ad-btn">Explore</a>
+</div>
+</div>
+</div>
+</section>
+
+<section class="slider-section section">
+<div class="section-header">
+<h3 class="section-title">Behind the Brand</h3>
+<p class="section-subtitle">Discover the story behind Nolaz Store</p>
+</div>
+<div class="image-slider">
+<div class="slider-container">
+<div class="slide active">
+<img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&h=400&fit=crop&crop=center" alt="Brand Story">
+<div class="slide-overlay">
+<h4>Our Story</h4>
+<p>Crafting contemporary fashion with passion</p>
+</div>
+</div>
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1200&h=400&fit=crop&crop=center" alt="Craftsmanship">
+<div class="slide-overlay">
+<h4>Quality Craftsmanship</h4>
+<p>Every piece tells a unique story</p>
+</div>
+</div>
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&h=400&fit=crop&crop=center" alt="Modern Fashion">
+<div class="slide-overlay">
+<h4>Modern Fashion</h4>
+<p>Redefining contemporary style</p>
+</div>
+</div>
+</div>
+<div class="slider-nav">
+<button class="nav-dot active" onclick="currentSlide2(1)"></button>
+<button class="nav-dot" onclick="currentSlide2(2)"></button>
+<button class="nav-dot" onclick="currentSlide2(3)"></button>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="site-footer">
+<div class="footer-content">
+<div class="footer-section">
+<h4>Nolaz Store</h4>
+<p>Contemporary fashion for the modern lifestyle.</p>
+</div>
+<div class="footer-section">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="shop.html">Shop</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-section">
+<h4>Contact</h4>
+<p>📱 WhatsApp: +234 904 645 6469</p>
+<p>📧 Email: hello@nolazstore.com</p>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2024 Nolaz Store — Built with ❤️</p>
+</div>
+</footer>
+
+<div id="cartModal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<h3>Shopping Cart</h3>
+<span class="close">&times;</span>
+</div>
+<div id="cartItems"></div>
+<div class="cart-footer">
+<div class="cart-total">
+<strong>Total: ₦<span id="cartTotal">0</span></strong>
+</div>
+<button id="checkoutBtn" class="btn btn-success">Checkout via WhatsApp</button>
+<button id="clearCartBtn" class="btn" style="background: #ef4444;">Clear Cart</button>
+</div>
+</div>
+</div>
+
+<script src="mobile.js"></script>
+<script src="cart.js"></script>
+<script src="home.js"></script>
+</body>
+</html>
