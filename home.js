@@ -91,10 +91,10 @@ function createProductCard(product) {
       <div class="price">${price}</div>
       <div class="actions">
         <button class="btn-buy" onclick="addToCart('${product.id}')">
-          🛒 Add to Cart
+          Add to Cart
         </button>
         <a class="btn-info" href="#" onclick="showProductDetails('${product.id}')">
-          ℹ️ Details
+          Details
         </a>
       </div>
     </div>
@@ -111,11 +111,11 @@ function showProductDetails(productId) {
   const details = `
 Product Details:
 
-📦 Name: ${product.name}
-💰 Price: ₦${parseInt(product.price || 0).toLocaleString()}
-📝 Description: ${product.description || 'No description'}
-🏷️ Category: ${product.category || 'Uncategorized'}
-🆔 Product ID: ${product.id}
+Name: ${product.name}
+Price: ₦${parseInt(product.price || 0).toLocaleString()}
+Description: ${product.description || 'No description'}
+Category: ${product.category || 'Uncategorized'}
+Product ID: ${product.id}
 
 Contact us on WhatsApp for more information!
   `;
@@ -126,39 +126,40 @@ Contact us on WhatsApp for more information!
 // Initialize when page loads
 window.addEventListener('DOMContentLoaded', () => {
   loadFeaturedProducts();
-  initializeVideo();
+  initializeSlider();
 });
 
-// Initialize video playback
-function initializeVideo() {
-  const video = document.querySelector('.video-ad');
-  if (video) {
-    // Ensure video plays
-    video.addEventListener('loadeddata', () => {
-      video.play().catch(e => {
-        console.log('Video autoplay prevented:', e);
-        // Show fallback image with overlay
-        const fallback = video.nextElementSibling;
-        if (fallback && fallback.classList.contains('video-fallback')) {
-          fallback.style.display = 'flex';
-        }
-      });
-    });
-    
-    // Restart video when it ends (backup for loop)
-    video.addEventListener('ended', () => {
-      video.currentTime = 0;
-      video.play();
-    });
-    
-    // Handle video errors
-    video.addEventListener('error', () => {
-      console.log('Video failed to load, showing fallback');
-      const fallback = video.nextElementSibling;
-      if (fallback && fallback.classList.contains('video-fallback')) {
-        fallback.style.display = 'flex';
-        video.style.display = 'none';
-      }
-    });
+// Initialize image slider
+function initializeSlider() {
+  let slideIndex = 1;
+  showSlide(slideIndex);
+  
+  // Auto slide every 4 seconds
+  setInterval(() => {
+    slideIndex++;
+    if (slideIndex > 3) slideIndex = 1;
+    showSlide(slideIndex);
+  }, 4000);
+}
+
+function currentSlide(n) {
+  showSlide(slideIndex = n);
+}
+
+function showSlide(n) {
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.nav-dot');
+  
+  if (n > slides.length) slideIndex = 1;
+  if (n < 1) slideIndex = slides.length;
+  
+  slides.forEach(slide => slide.classList.remove('active'));
+  dots.forEach(dot => dot.classList.remove('active'));
+  
+  if (slides[slideIndex - 1]) {
+    slides[slideIndex - 1].classList.add('active');
+  }
+  if (dots[slideIndex - 1]) {
+    dots[slideIndex - 1].classList.add('active');
   }
 }

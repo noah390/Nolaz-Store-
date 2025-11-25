@@ -53,10 +53,10 @@ function createProductCard(product) {
       <div class="price">${price}</div>
       <div class="actions">
         <button class="btn-buy" onclick="addToCart('${product.id}')">
-          🛒 Add to Cart
+          Add to Cart
         </button>
         <a class="btn-info" href="#" onclick="showProductDetails('${product.id}')">
-          ℹ️ Details
+          Details
         </a>
       </div>
     </div>
