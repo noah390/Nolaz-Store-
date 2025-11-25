@@ -1,5 +1,5 @@
 // Home page functionality
-const SHEET_CSV_URL = 'REPLACE_WITH_YOUR_PUBLISHED_CSV_URL';
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTU0jwvRkIPHLCwoOk0JC-01c3oP1bXTXB7zugyRW5ijxYlKTyQndXyTZ1h6M75fCqEGUySou8yOJ5C/pub?gid=0&single=true&output=csv';
 
 // Load featured products (first 6 products)
 async function loadFeaturedProducts() {

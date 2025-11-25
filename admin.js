@@ -81,8 +81,9 @@ productForm.addEventListener('submit', async (e) => {
     return;
   }
   
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('REPLACE_WITH')) {
-    showStatus('Configuration needed', 'info');
+  // Test connection first
+  if (!await testConnection()) {
+    showStatus('Unable to connect to Google Sheets. Please check configuration.', 'error');
     return;
   }
   
@@ -386,3 +387,37 @@ function clearStatus() {
   statusEl.className = '';
   statusEl.style.display = 'none';
 }
+
+// Test connection to Google Apps Script
+async function testConnection() {
+  try {
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: 'GET',
+      mode: 'cors'
+    });
+    return response.ok;
+  } catch (error) {
+    console.error('Connection test failed:', error);
+    return false;
+  }
+}
+
+// Initialize admin panel
+function initAdmin() {
+  // Load products data for editing
+  window.allProducts = [];
+  
+  // Test configuration on load
+  if (localStorage.getItem('nolazAdminLoggedIn') === 'true') {
+    testConnection().then(connected => {
+      if (connected) {
+        console.log('✅ Google Apps Script connection successful');
+      } else {
+        console.warn('⚠️ Google Apps Script connection failed');
+      }
+    });
+  }
+}
+
+// Call init when page loads
+window.addEventListener('DOMContentLoaded', initAdmin);
