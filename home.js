@@ -124,31 +124,49 @@ Contact us on WhatsApp for more information!
 }
 
 // Initialize when page loads
+let slideIndex = 1;
+let slideIndex2 = 1;
+
 window.addEventListener('DOMContentLoaded', () => {
   loadFeaturedProducts();
   initializeSlider();
 });
 
-// Initialize image slider
+// Initialize image sliders
 function initializeSlider() {
   let slideIndex = 1;
-  showSlide(slideIndex);
+  let slideIndex2 = 1;
   
-  // Auto slide every 4 seconds
+  showSlide(slideIndex);
+  showSlide2(slideIndex2);
+  
+  // Auto slide every 4 seconds for first slider
   setInterval(() => {
     slideIndex++;
     if (slideIndex > 3) slideIndex = 1;
     showSlide(slideIndex);
   }, 4000);
+  
+  // Auto slide every 5 seconds for second slider
+  setInterval(() => {
+    slideIndex2++;
+    if (slideIndex2 > 3) slideIndex2 = 1;
+    showSlide2(slideIndex2);
+  }, 5000);
 }
 
 function currentSlide(n) {
   showSlide(slideIndex = n);
 }
 
+function currentSlide2(n) {
+  showSlide2(slideIndex2 = n);
+}
+
 function showSlide(n) {
-  const slides = document.querySelectorAll('.slide');
-  const dots = document.querySelectorAll('.nav-dot');
+  const sliders = document.querySelectorAll('.slider-section');
+  const slides = sliders[0]?.querySelectorAll('.slide') || [];
+  const dots = sliders[0]?.querySelectorAll('.nav-dot') || [];
   
   if (n > slides.length) slideIndex = 1;
   if (n < 1) slideIndex = slides.length;
@@ -161,5 +179,24 @@ function showSlide(n) {
   }
   if (dots[slideIndex - 1]) {
     dots[slideIndex - 1].classList.add('active');
+  }
+}
+
+function showSlide2(n) {
+  const sliders = document.querySelectorAll('.slider-section');
+  const slides = sliders[1]?.querySelectorAll('.slide') || [];
+  const dots = sliders[1]?.querySelectorAll('.nav-dot') || [];
+  
+  if (n > slides.length) slideIndex2 = 1;
+  if (n < 1) slideIndex2 = slides.length;
+  
+  slides.forEach(slide => slide.classList.remove('active'));
+  dots.forEach(dot => dot.classList.remove('active'));
+  
+  if (slides[slideIndex2 - 1]) {
+    slides[slideIndex2 - 1].classList.add('active');
+  }
+  if (dots[slideIndex2 - 1]) {
+    dots[slideIndex2 - 1].classList.add('active');
   }
 }
