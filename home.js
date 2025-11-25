@@ -124,4 +124,41 @@ Contact us on WhatsApp for more information!
 }
 
 // Initialize when page loads
-window.addEventListener('DOMContentLoaded', loadFeaturedProducts);
+window.addEventListener('DOMContentLoaded', () => {
+  loadFeaturedProducts();
+  initializeVideo();
+});
+
+// Initialize video playback
+function initializeVideo() {
+  const video = document.querySelector('.video-ad');
+  if (video) {
+    // Ensure video plays
+    video.addEventListener('loadeddata', () => {
+      video.play().catch(e => {
+        console.log('Video autoplay prevented:', e);
+        // Show fallback image with overlay
+        const fallback = video.nextElementSibling;
+        if (fallback && fallback.classList.contains('video-fallback')) {
+          fallback.style.display = 'flex';
+        }
+      });
+    });
+    
+    // Restart video when it ends (backup for loop)
+    video.addEventListener('ended', () => {
+      video.currentTime = 0;
+      video.play();
+    });
+    
+    // Handle video errors
+    video.addEventListener('error', () => {
+      console.log('Video failed to load, showing fallback');
+      const fallback = video.nextElementSibling;
+      if (fallback && fallback.classList.contains('video-fallback')) {
+        fallback.style.display = 'flex';
+        video.style.display = 'none';
+      }
+    });
+  }
+}

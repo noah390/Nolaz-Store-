@@ -321,18 +321,46 @@ body {
   height: 450px;
   object-fit: cover;
   border-radius: var(--radius-lg);
+  background: var(--gradient-accent);
+}
+
+.video-overlay-text {
+  position: absolute;
+  bottom: var(--spacing-xl);
+  left: var(--spacing-xl);
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.video-overlay-text h4 {
+  margin: 0 0 var(--spacing-sm);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.video-overlay-text p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
 }
 
 .video-fallback {
   position: relative;
   width: 100%;
   height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-accent);
 }
 
 .video-fallback img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .play-overlay {
@@ -471,40 +499,52 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: white;
   text-align: center;
+  padding: var(--spacing-xl);
 }
 
 .banner-overlay h3 {
-  margin: 0 0 var(--spacing-sm);
-  font-size: 32px;
-  font-weight: 800;
+  margin: 0 0 var(--spacing-md);
+  font-size: 36px;
+  font-weight: 900;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.02em;
 }
 
 .banner-overlay p {
-  margin: 0 0 var(--spacing-lg);
-  font-size: 18px;
-  opacity: 0.9;
+  margin: 0 0 var(--spacing-xl);
+  font-size: 20px;
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  max-width: 600px;
+  line-height: 1.4;
 }
 
 .banner-btn {
   background: var(--gradient-primary);
   color: white;
-  padding: var(--spacing-md) var(--spacing-xl);
+  padding: var(--spacing-lg) var(--spacing-2xl);
   border-radius: var(--radius-lg);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   transition: all 0.3s ease;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid transparent;
 }
 
 .banner-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: var(--shadow-xl);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Showcase Section */
