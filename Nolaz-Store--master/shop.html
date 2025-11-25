@@ -21,7 +21,7 @@
 </nav>
 <div class="header-actions">
 <button id="cartBtn" class="cart-btn">
-🛒 Cart (<span id="cartCount">0</span>)
+Cart (<span id="cartCount">0</span>)
 </button>
 <a href="admin.html" class="btn">Login</a>
 </div>
@@ -171,7 +171,17 @@ function showShopSlide(n) {
   }
 }
 
-window.addEventListener('DOMContentLoaded', initializeShopSlider);
+window.addEventListener('DOMContentLoaded', () => {
+  initializeShopSlider();
+  // Initialize main script functionality
+  if (typeof init === 'function') {
+    init().then(() => {
+      if (typeof setupFilters === 'function') {
+        setupFilters();
+      }
+    });
+  }
+});
 </script>
 </body>
 </html>
