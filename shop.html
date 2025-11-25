@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nolaz Store - Shop</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+<div class="header-content">
+<div class="brand">
+<h1>Nolaz Store</h1>
+</div>
+<button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+<nav class="main-nav" id="mainNav">
+<a href="home.html">Home</a>
+<a href="shop.html" class="active">Shop</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+</nav>
+<div class="header-actions">
+<button id="cartBtn" class="cart-btn">
+🛒 Cart (<span id="cartCount">0</span>)
+</button>
+<a href="admin.html" class="btn">Login</a>
+</div>
+</div>
+</header>
+
+<main class="container">
+<section class="shop-header">
+<h2>Our Collection</h2>
+<p>Browse our curated selection of contemporary fashion pieces</p>
+</section>
+
+<section class="shop-filters">
+<div class="filter-group">
+<label for="categoryFilter">Category:</label>
+<select id="categoryFilter">
+<option value="">All Categories</option>
+</select>
+</div>
+<div class="filter-group">
+<label for="sortFilter">Sort by:</label>
+<select id="sortFilter">
+<option value="name">Name</option>
+<option value="price-low">Price: Low to High</option>
+<option value="price-high">Price: High to Low</option>
+</select>
+</div>
+</section>
+
+<section id="products" class="products-grid">
+<!-- Products will be injected here -->
+</section>
+</main>
+
+<footer class="site-footer">
+<div class="footer-content">
+<div class="footer-section">
+<h4>Nolaz Store</h4>
+<p>Contemporary fashion for the modern lifestyle.</p>
+</div>
+<div class="footer-section">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="shop.html">Shop</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-section">
+<h4>Contact</h4>
+<p>📱 WhatsApp: +234 904 645 6469</p>
+<p>📧 Email: hello@nolazstore.com</p>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2024 Nolaz Store — Built with ❤️</p>
+</div>
+</footer>
+
+<div id="cartModal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<h3>Shopping Cart</h3>
+<span class="close">&times;</span>
+</div>
+<div id="cartItems"></div>
+<div class="cart-footer">
+<div class="cart-total">
+<strong>Total: ₦<span id="cartTotal">0</span></strong>
+</div>
+<button id="checkoutBtn" class="btn btn-success">Checkout via WhatsApp</button>
+<button id="clearCartBtn" class="btn" style="background: #ef4444;">Clear Cart</button>
+</div>
+</div>
+</div>
+
+<script src="mobile.js"></script>
+<script src="cart.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

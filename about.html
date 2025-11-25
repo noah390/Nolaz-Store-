@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nolaz Store - About Us</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+<div class="header-content">
+<div class="brand">
+<h1>Nolaz Store</h1>
+</div>
+<button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+<nav class="main-nav" id="mainNav">
+<a href="home.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="about.html" class="active">About</a>
+<a href="contact.html">Contact</a>
+</nav>
+<div class="header-actions">
+<button id="cartBtn" class="cart-btn">
+🛒 Cart (<span id="cartCount">0</span>)
+</button>
+<a href="admin.html" class="btn">Login</a>
+</div>
+</div>
+</header>
+
+<main class="container">
+<section class="page-header">
+<h1>About Nolaz</h1>
+<p>Redefining contemporary fashion with minimal elegance</p>
+</section>
+
+<section class="about-content">
+<div class="about-grid">
+<div class="about-text">
+<h2>Our Story</h2>
+<p>Founded with a vision to bring contemporary fashion to the modern Nigerian, Nolaz Store curates pieces that blend minimal aesthetics with maximum impact. We believe that great style shouldn't be complicated.</p>
+<p>Every piece in our collection is carefully selected for its quality, design, and versatility. From casual wear to statement pieces, we offer fashion that fits seamlessly into your lifestyle.</p>
+</div>
+<div class="about-image">
+<div class="placeholder-image">
+<span>Our Story</span>
+</div>
+</div>
+</div>
+</section>
+
+<section class="values">
+<h2>Our Values</h2>
+<div class="values-grid">
+<div class="value-card">
+<div class="value-icon">🎯</div>
+<h3>Quality First</h3>
+<p>We source only the finest materials and work with trusted suppliers to ensure every piece meets our high standards.</p>
+</div>
+<div class="value-card">
+<div class="value-icon">🌍</div>
+<h3>Sustainable Fashion</h3>
+<p>We're committed to responsible fashion practices that respect both people and the planet.</p>
+</div>
+<div class="value-card">
+<div class="value-icon">💝</div>
+<h3>Customer Focused</h3>
+<p>Your satisfaction is our priority. We provide personalized service and support every step of the way.</p>
+</div>
+</div>
+</section>
+
+<section class="team">
+<h2>Meet Our Team</h2>
+<div class="team-grid">
+<div class="team-member">
+<div class="member-image">
+<img src="image/pppppppp.jpg" alt="Abiodun Ayomide">
+</div>
+<h3>Abiodun Ayomide</h3>
+<p>Founder & Creative Director</p>
+</div>
+<div class="team-member">
+<div class="member-image">
+<img src="image/milda.jpeg" alt="Lorein Lohoba">
+</div>
+<h3>Lorein Lohoba</h3>
+<p>Head of Operations</p>
+</div>
+<div class="team-member">
+<div class="member-image">
+<span>👤</span>
+</div>
+<h3>Aiden Grace</h3>
+<p>Customer Experience Lead</p>
+</div>
+</div>
+</section>
+
+<section class="cta-section">
+<h2>Ready to Explore?</h2>
+<p>Discover our latest collection and find your perfect style</p>
+<a href="shop.html" class="btn btn-primary">Shop Now</a>
+</section>
+</main>
+
+<footer class="site-footer">
+<div class="footer-content">
+<div class="footer-section">
+<h4>Nolaz Store</h4>
+<p>Contemporary fashion for the modern lifestyle.</p>
+</div>
+<div class="footer-section">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="home.html">Home</a></li>
+<li><a href="shop.html">Shop</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-section">
+<h4>Contact</h4>
+<p>📱 WhatsApp: +234 904 645 6469</p>
+<p>📧 Email: hello@nolazstore.com</p>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2024 Nolaz Store — Built with ❤️</p>
+</div>
+</footer>
+
+<div id="cartModal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<h3>Shopping Cart</h3>
+<span class="close">&times;</span>
+</div>
+<div id="cartItems"></div>
+<div class="cart-footer">
+<div class="cart-total">
+<strong>Total: ₦<span id="cartTotal">0</span></strong>
+</div>
+<button id="checkoutBtn" class="btn btn-success">Checkout via WhatsApp</button>
+<button id="clearCartBtn" class="btn" style="background: #ef4444;">Clear Cart</button>
+</div>
+</div>
+</div>
+
+<script src="mobile.js"></script>
+<script src="cart.js"></script>
+</body>
+</html>
