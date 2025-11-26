@@ -115,57 +115,91 @@ function showEmpty() {
   `;
 }
 
+// Sample products for testing
+function getSampleProducts() {
+  return [
+    {
+      id: '1',
+      name: 'Premium Cotton T-Shirt',
+      price: '15000',
+      description: 'Comfortable premium cotton t-shirt perfect for everyday wear',
+      category: 'Clothing',
+      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop',
+      status: 'active'
+    },
+    {
+      id: '2',
+      name: 'Gold Chain Necklace',
+      price: '45000',
+      description: 'Elegant gold-plated chain necklace for special occasions',
+      category: 'Jewelry',
+      image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=300&fit=crop',
+      status: 'active'
+    },
+    {
+      id: '3',
+      name: 'Designer Handbag',
+      price: '35000',
+      description: 'Stylish designer handbag made from premium materials',
+      category: 'Accessories',
+      image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop',
+      status: 'active'
+    }
+  ];
+}
+
 // Initialize the store
 async function init() {
   const productsEl = document.getElementById('products');
   
-  if (!SHEET_CSV_URL || SHEET_CSV_URL.includes('REPLACE_WITH')) {
-    showLoading();
+  showLoading();
+  
+  let activeProducts = [];
+  
+  // Try to load from Google Sheets first
+  if (SHEET_CSV_URL && !SHEET_CSV_URL.includes('REPLACE_WITH')) {
+    try {
+      const response = await fetch(SHEET_CSV_URL);
+      
+      if (response.ok) {
+        const csvData = await response.text();
+        const products = csvToArray(csvData);
+        
+        // Filter active products
+        activeProducts = products.filter(product => 
+          product.name && 
+          product.price && 
+          (product.status || 'active').toLowerCase() !== 'inactive'
+        );
+        
+        console.log('Products loaded from Google Sheets:', activeProducts.length);
+      }
+    } catch (error) {
+      console.warn('Failed to load from Google Sheets:', error);
+    }
+  }
+  
+  // If no products loaded, use sample products
+  if (activeProducts.length === 0) {
+    activeProducts = getSampleProducts();
+    console.log('Using sample products:', activeProducts.length);
+  }
+  
+  // Store products globally for cart and details
+  window.productsData = activeProducts;
+  
+  if (activeProducts.length === 0) {
+    showEmpty();
     return;
   }
   
-  showLoading();
+  // Clear loading and add products
+  productsEl.innerHTML = '';
+  activeProducts.forEach(product => {
+    productsEl.appendChild(createProductCard(product));
+  });
   
-  try {
-    const response = await fetch(SHEET_CSV_URL);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-    
-    const csvData = await response.text();
-    const products = csvToArray(csvData);
-    
-    // Filter active products
-    const activeProducts = products.filter(product => 
-      product.name && 
-      product.price && 
-      (product.status || 'active').toLowerCase() !== 'inactive'
-    );
-    
-    // Store products globally for cart and details
-    window.productsData = activeProducts;
-    
-    // Debug log
-    console.log('Products loaded:', activeProducts.length);
-    
-    if (activeProducts.length === 0) {
-      showEmpty();
-      return;
-    }
-    
-    // Clear loading and add products
-    productsEl.innerHTML = '';
-    activeProducts.forEach(product => {
-      productsEl.appendChild(createProductCard(product));
-    });
-    
-    return activeProducts; // Return for filter setup
-    
-  } catch (error) {
-    console.error('Error loading products:', error);
-    showError('Unable to load products. Please check your internet connection and try again.');
-  }
+  return activeProducts; // Return for filter setup
 }
 
 // Filter and sort functionality

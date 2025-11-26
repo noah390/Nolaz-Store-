@@ -6,9 +6,18 @@ class ShoppingCart {
   }
 
   init() {
-    this.updateCartCount();
-    this.bindEvents();
-    this.renderCart();
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        this.updateCartCount();
+        this.bindEvents();
+        this.renderCart();
+      });
+    } else {
+      this.updateCartCount();
+      this.bindEvents();
+      this.renderCart();
+    }
   }
 
   bindEvents() {
@@ -108,6 +117,9 @@ class ShoppingCart {
     const cartCountEl = document.getElementById('cartCount');
     if (cartCountEl) {
       cartCountEl.textContent = count;
+      console.log('Cart count updated to:', count);
+    } else {
+      console.error('Cart count element not found');
     }
   }
 
@@ -220,6 +232,13 @@ let cart;
 function initializeCart() {
   cart = new ShoppingCart();
   console.log('Cart initialized');
+  
+  // Periodically update cart count to ensure sync
+  setInterval(() => {
+    if (cart) {
+      cart.updateCartCount();
+    }
+  }, 1000);
 }
 
 // Initialize immediately if DOM is ready, otherwise wait
@@ -229,7 +248,7 @@ if (document.readyState === 'loading') {
   initializeCart();
 }
 
-// Fallback cart button handler
+// Fallback cart button handler and count updater
 document.addEventListener('DOMContentLoaded', function() {
   const cartBtn = document.getElementById('cartBtn');
   if (cartBtn && !cartBtn.hasAttribute('data-cart-initialized')) {
@@ -243,10 +262,16 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+  
+  // Force update cart count on page load
+  if (cart) {
+    cart.updateCartCount();
+  }
 });
 
 // Global function to add to cart (called from product cards)
 function addToCart(productId) {
+  console.log('Adding to cart:', productId);
   const product = window.productsData?.find(p => p.id === productId);
   if (product) {
     cart.addItem(product);
@@ -256,8 +281,14 @@ function addToCart(productId) {
   }
 }
 
+// Ensure function is globally available
+window.addToCart = addToCart;
+
 // Global function to show product details
 function showProductDetails(productId) {
+  console.log('Showing details for product:', productId);
+  console.log('Available products:', window.productsData);
+  
   const product = window.productsData?.find(p => p.id === productId);
   if (!product) {
     console.error('Product not found:', productId);
@@ -267,13 +298,16 @@ function showProductDetails(productId) {
   
   const details = `Product Details:
 
-📦 Name: ${product.name}
-💰 Price: ₦${parseInt(product.price || 0).toLocaleString()}
-📝 Description: ${product.description || 'No description'}
-🏷️ Category: ${product.category || 'Uncategorized'}
-🆔 Product ID: ${product.id}
+Name: ${product.name}
+Price: ₦${parseInt(product.price || 0).toLocaleString()}
+Description: ${product.description || 'No description'}
+Category: ${product.category || 'Uncategorized'}
+Product ID: ${product.id}
 
 Contact us on WhatsApp to place your order!`;
   
   alert(details);
 }
+
+// Ensure function is globally available
+window.showProductDetails = showProductDetails;

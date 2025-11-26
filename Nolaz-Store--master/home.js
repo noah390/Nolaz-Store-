@@ -1,44 +1,86 @@
 // Home page functionality
 const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTU0jwvRkIPHLCwoOk0JC-01c3oP1bXTXB7zugyRW5ijxYlKTyQndXyTZ1h6M75fCqEGUySou8yOJ5C/pub?gid=0&single=true&output=csv';
 
+// Sample products for testing
+function getSampleProducts() {
+  return [
+    {
+      id: '1',
+      name: 'Premium Cotton T-Shirt',
+      price: '15000',
+      description: 'Comfortable premium cotton t-shirt perfect for everyday wear',
+      category: 'Clothing',
+      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop',
+      status: 'active'
+    },
+    {
+      id: '2',
+      name: 'Gold Chain Necklace',
+      price: '45000',
+      description: 'Elegant gold-plated chain necklace for special occasions',
+      category: 'Jewelry',
+      image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=300&fit=crop',
+      status: 'active'
+    },
+    {
+      id: '3',
+      name: 'Designer Handbag',
+      price: '35000',
+      description: 'Stylish designer handbag made from premium materials',
+      category: 'Accessories',
+      image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop',
+      status: 'active'
+    }
+  ];
+}
+
 // Load featured products (first 6 products)
 async function loadFeaturedProducts() {
   const featuredEl = document.getElementById('featuredProducts') || document.getElementById('products');
   
-  if (!SHEET_CSV_URL || SHEET_CSV_URL.includes('REPLACE_WITH')) {
-    featuredEl.innerHTML = '<p>Loading products...</p>';
+  featuredEl.innerHTML = '<p>Loading featured products...</p>';
+  
+  let activeProducts = [];
+  
+  // Try to load from Google Sheets first
+  if (SHEET_CSV_URL && !SHEET_CSV_URL.includes('REPLACE_WITH')) {
+    try {
+      const response = await fetch(SHEET_CSV_URL);
+      
+      if (response.ok) {
+        const csvData = await response.text();
+        const products = csvToArray(csvData);
+        
+        activeProducts = products.filter(product => 
+          product.name && 
+          product.price && 
+          (product.status || 'active').toLowerCase() !== 'inactive'
+        ).slice(0, 6); // Get first 6 products
+        
+        console.log('Featured products loaded from Google Sheets:', activeProducts.length);
+      }
+    } catch (error) {
+      console.warn('Failed to load from Google Sheets:', error);
+    }
+  }
+  
+  // If no products loaded, use sample products
+  if (activeProducts.length === 0) {
+    activeProducts = getSampleProducts();
+    console.log('Using sample featured products:', activeProducts.length);
+  }
+  
+  window.productsData = activeProducts;
+  
+  if (activeProducts.length === 0) {
+    featuredEl.innerHTML = '<p>No featured products available</p>';
     return;
   }
   
-  try {
-    featuredEl.innerHTML = '<p>Loading featured products...</p>';
-    
-    const response = await fetch(SHEET_CSV_URL);
-    const csvData = await response.text();
-    const products = csvToArray(csvData);
-    
-    const activeProducts = products.filter(product => 
-      product.name && 
-      product.price && 
-      (product.status || 'active').toLowerCase() !== 'inactive'
-    ).slice(0, 6); // Get first 6 products
-    
-    window.productsData = activeProducts;
-    
-    if (activeProducts.length === 0) {
-      featuredEl.innerHTML = '<p>No featured products available</p>';
-      return;
-    }
-    
-    featuredEl.innerHTML = '';
-    activeProducts.forEach(product => {
-      featuredEl.appendChild(createProductCard(product));
-    });
-    
-  } catch (error) {
-    console.error('Error loading featured products:', error);
-    featuredEl.innerHTML = '<p>Unable to load featured products</p>';
-  }
+  featuredEl.innerHTML = '';
+  activeProducts.forEach(product => {
+    featuredEl.appendChild(createProductCard(product));
+  });
 }
 
 // Parse CSV (same as main script)
@@ -103,17 +145,17 @@ function createProductCard(product) {
   return div;
 }
 
-// Show product details (will be overridden by cart.js if loaded)
-if (typeof showProductDetails === 'undefined') {
-  function showProductDetails(productId) {
-    const product = window.productsData?.find(p => p.id === productId);
-    if (!product) {
-      console.error('Product not found:', productId);
-      alert('Product details not available.');
-      return;
-    }
-    
-    const details = `Product Details:
+// Ensure global functions are available
+window.showProductDetails = function(productId) {
+  console.log('Home.js showProductDetails called for:', productId);
+  const product = window.productsData?.find(p => p.id === productId);
+  if (!product) {
+    console.error('Product not found:', productId);
+    alert('Product details not available.');
+    return;
+  }
+  
+  const details = `Product Details:
 
 Name: ${product.name}
 Price: ₦${parseInt(product.price || 0).toLocaleString()}
@@ -122,21 +164,22 @@ Category: ${product.category || 'Uncategorized'}
 Product ID: ${product.id}
 
 Contact us on WhatsApp for more information!`;
-    
-    alert(details);
-  }
-}
+  
+  alert(details);
+};
 
-// Add to cart function (will be overridden by cart.js if loaded)
-if (typeof addToCart === 'undefined') {
-  function addToCart(productId) {
-    const product = window.productsData?.find(p => p.id === productId);
-    if (!product) {
-      alert('Product not found. Please try again.');
-      return;
-    }
-    
-    // Fallback if cart.js is not loaded
+window.addToCart = function(productId) {
+  console.log('Home.js addToCart called for:', productId);
+  const product = window.productsData?.find(p => p.id === productId);
+  if (!product) {
+    alert('Product not found. Please try again.');
+    return;
+  }
+  
+  // Use cart if available, otherwise fallback to WhatsApp
+  if (window.cart) {
+    window.cart.addItem(product);
+  } else {
     const message = `Hello! I'd like to add this item to my cart:
 
 ${product.name}
@@ -148,7 +191,7 @@ Please help me place an order.`;
     const whatsappUrl = `https://wa.me/2349046456469?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   }
-}
+};
 
 // Initialize when page loads
 let slideIndex = 1;
