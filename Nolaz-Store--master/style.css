@@ -998,6 +998,47 @@ body {
   margin-right: 8px;
 }
 
+/* Visitor Dashboard Styles */
+.visitor-count {
+  background: var(--success);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.visitor-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: var(--radius);
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.stat-card h4 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-card span {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
 /* Modal Styles */
 .modal {
   display: none;

@@ -27,6 +27,7 @@
 <div class="admin-nav">
 <button id="addProductBtn" class="btn btn-success">Add New Product</button>
 <button id="viewProductsBtn" class="btn">View All Products</button>
+<button id="liveVisitorsBtn" class="btn">Live Visitors</button>
 <button id="logoutBtn" class="btn" style="background: #ef4444;">Logout</button>
 </div>
 
@@ -78,6 +79,25 @@
 <div id="viewProductsSection" style="display: none;">
 <h3>All Products</h3>
 <div id="productsTable">Loading products...</div>
+</div>
+
+<div id="liveVisitorsSection" style="display: none;">
+<h3>Live Visitors <span id="visitorCount" class="visitor-count">0</span></h3>
+<div class="visitor-stats">
+<div class="stat-card">
+<h4>Online Now</h4>
+<span id="onlineCount">0</span>
+</div>
+<div class="stat-card">
+<h4>Today's Visits</h4>
+<span id="todayCount">0</span>
+</div>
+<div class="stat-card">
+<h4>Total Visits</h4>
+<span id="totalCount">0</span>
+</div>
+</div>
+<div id="visitorsTable">Loading visitors...</div>
 </div>
 
 <div id="status"></div>

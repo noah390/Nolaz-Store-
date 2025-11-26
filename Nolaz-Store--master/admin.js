@@ -18,6 +18,8 @@ const addProductBtn = document.getElementById('addProductBtn');
 const viewProductsBtn = document.getElementById('viewProductsBtn');
 const addProductSection = document.getElementById('addProductSection');
 const viewProductsSection = document.getElementById('viewProductsSection');
+const liveVisitorsSection = document.getElementById('liveVisitorsSection');
+const liveVisitorsBtn = document.getElementById('liveVisitorsBtn');
 
 // Check if already logged in
 if (localStorage.getItem('nolazAdminLoggedIn') === 'true') {
@@ -45,17 +47,31 @@ addProductBtn.addEventListener('click', () => {
   resetForm();
   addProductSection.style.display = 'block';
   viewProductsSection.style.display = 'none';
+  liveVisitorsSection.style.display = 'none';
   addProductBtn.classList.add('btn-success');
   viewProductsBtn.classList.remove('btn-success');
+  liveVisitorsBtn.classList.remove('btn-success');
   clearStatus();
 });
 
 viewProductsBtn.addEventListener('click', () => {
   addProductSection.style.display = 'none';
   viewProductsSection.style.display = 'block';
+  liveVisitorsSection.style.display = 'none';
   viewProductsBtn.classList.add('btn-success');
   addProductBtn.classList.remove('btn-success');
+  liveVisitorsBtn.classList.remove('btn-success');
   loadProducts();
+});
+
+liveVisitorsBtn.addEventListener('click', () => {
+  addProductSection.style.display = 'none';
+  viewProductsSection.style.display = 'none';
+  liveVisitorsSection.style.display = 'block';
+  liveVisitorsBtn.classList.add('btn-success');
+  addProductBtn.classList.remove('btn-success');
+  viewProductsBtn.classList.remove('btn-success');
+  loadLiveVisitors();
 });
 
 // Enter key login
@@ -418,6 +434,102 @@ function initAdmin() {
     });
   }
 }
+
+// Load and display live visitors
+function loadLiveVisitors() {
+  const visitorsTable = document.getElementById('visitorsTable');
+  const visitorCount = document.getElementById('visitorCount');
+  const onlineCount = document.getElementById('onlineCount');
+  const todayCount = document.getElementById('todayCount');
+  const totalCount = document.getElementById('totalCount');
+  
+  try {
+    const liveVisitors = JSON.parse(localStorage.getItem('nolazLiveVisitors') || '[]');
+    const allVisitors = JSON.parse(localStorage.getItem('nolazVisitors') || '[]');
+    
+    // Filter visitors from today
+    const today = new Date().toDateString();
+    const todayVisitors = allVisitors.filter(v => new Date(v.timestamp).toDateString() === today);
+    
+    // Update counts
+    visitorCount.textContent = liveVisitors.length;
+    onlineCount.textContent = liveVisitors.length;
+    todayCount.textContent = todayVisitors.length;
+    totalCount.textContent = allVisitors.length;
+    
+    if (liveVisitors.length === 0) {
+      visitorsTable.innerHTML = '<p>No visitors currently online</p>';
+      return;
+    }
+    
+    // Create table
+    let tableHTML = `
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th>Visitor ID</th>
+            <th>Page</th>
+            <th>Device</th>
+            <th>Browser</th>
+            <th>Location</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    
+    liveVisitors.forEach(visitor => {
+      const timeAgo = getTimeAgo(visitor.timestamp);
+      const isActive = new Date() - new Date(visitor.timestamp) < 60000; // Active if last seen < 1 min
+      
+      tableHTML += `
+        <tr>
+          <td data-label="Visitor ID">${visitor.id.substring(0, 12)}...</td>
+          <td data-label="Page">${visitor.page}</td>
+          <td data-label="Device">${visitor.device}</td>
+          <td data-label="Browser">${visitor.browser}</td>
+          <td data-label="Location">${visitor.country || 'Unknown'}</td>
+          <td data-label="Time">${timeAgo}</td>
+          <td data-label="Status">
+            <span style="color: ${isActive ? '#10b981' : '#f59e0b'}; font-weight: bold;">
+              ${isActive ? '🟢 Active' : '🟡 Idle'}
+            </span>
+          </td>
+        </tr>
+      `;
+    });
+    
+    tableHTML += '</tbody></table>';
+    visitorsTable.innerHTML = tableHTML;
+    
+  } catch (error) {
+    console.error('Error loading visitors:', error);
+    visitorsTable.innerHTML = '<p>Error loading visitor data</p>';
+  }
+}
+
+// Get time ago string
+function getTimeAgo(timestamp) {
+  const now = new Date();
+  const time = new Date(timestamp);
+  const diffMs = now - time;
+  const diffMins = Math.floor(diffMs / 60000);
+  
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  return `${diffDays}d ago`;
+}
+
+// Auto-refresh visitors every 10 seconds
+setInterval(() => {
+  if (liveVisitorsSection && liveVisitorsSection.style.display === 'block') {
+    loadLiveVisitors();
+  }
+}, 10000);
 
 // Call init when page loads
 window.addEventListener('DOMContentLoaded', initAdmin);
