@@ -62,11 +62,17 @@
     console.log('%cSTOP!', 'color: red; font-size: 50px; font-weight: bold;');
     console.log('%cThis is a browser feature intended for developers. Unauthorized access is prohibited.', 'color: red; font-size: 16px;');
 
-    // Disable text selection
-    document.onselectstart = function() {
+    // Disable text selection (except for input fields)
+    document.onselectstart = function(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            return true;
+        }
         return false;
     };
-    document.onmousedown = function() {
+    document.onmousedown = function(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            return true;
+        }
         return false;
     };
 
