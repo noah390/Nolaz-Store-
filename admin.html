@@ -3,119 +3,527 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nolaz Admin Panel</title>
+<title>Admin Panel - Nolaz Store</title>
 <link rel="stylesheet" href="style.css">
+<style>
+.admin-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+.admin-nav { display: flex; gap: 1rem; margin-bottom: 2rem; }
+.admin-section { display: none; }
+.admin-section.active { display: block; }
+.form-section { background: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; }
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; box-sizing: border-box; }
+.item-card { display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 1rem; }
+.item-card img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; }
+.item-info { flex: 1; }
+.item-info h4 { margin: 0 0 0.5rem; }
+.item-info p { margin: 0; color: #6b7280; }
+.category { background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; }
+.featured-badge { background: #fbbf24; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; margin-left: 0.5rem; }
+.login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.login-form { background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 20px 40px rgba(0,0,0,0.1); max-width: 400px; width: 90%; }
+</style>
 </head>
 <body>
-<div class="admin-container">
-<div class="admin-header">
-<h2>Nolaz Store Admin</h2>
-<p>Manage your products and inventory</p>
-<a href="index.html" class="btn" style="margin-top: 16px;">← Back to Store</a>
+
+<div id="loginScreen" class="login-screen">
+  <div class="login-form">
+    <h1>Admin Login</h1>
+    <input type="password" id="adminPassword" placeholder="Enter admin password" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; box-sizing: border-box;">
+    <button onclick="login()" style="width: 100%; background: #667eea; color: white; border: none; padding: 0.75rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">Login</button>
+  </div>
 </div>
 
-<div id="loginPanel">
-<h3 style="text-align: center; margin-bottom: 24px;">Admin Login</h3>
-<div class="form-group">
-<label for="adminPass">Admin Password</label>
-<input id="adminPass" type="password" placeholder="Enter admin password">
-</div>
-<button id="loginBtn" class="btn btn-success" style="width: 100%;">Login</button>
+<div id="adminPanel" style="display: none;">
+  <header class="site-header">
+    <div class="header-content">
+      <div class="brand">
+        <h1>Nolaz Store Admin</h1>
+      </div>
+      <div class="header-actions">
+        <button onclick="logout()" class="btn btn-outline">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="admin-nav">
+      <button onclick="showSection('products')" id="productsBtn" class="btn btn-primary">Products</button>
+      <button onclick="showSection('blog')" id="blogBtn" class="btn btn-outline">Blog Posts</button>
+      <button onclick="showSection('users')" id="usersBtn" class="btn btn-outline">Users</button>
+    </div>
+
+    <!-- Products Section -->
+    <div id="productsSection" class="admin-section active">
+      <div class="admin-nav">
+        <button onclick="showProductForm()" class="btn btn-success">Add Product</button>
+        <button onclick="loadProducts()" class="btn btn-outline">View Products</button>
+      </div>
+      
+      <div id="productForm" class="form-section">
+        <h2>Add Product</h2>
+        <form onsubmit="saveProduct(event)">
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" id="productName" required>
+          </div>
+          <div class="form-group">
+            <label>Price (₦)</label>
+            <input type="number" id="productPrice" required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="productDescription" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="productCategory">
+              <option value="clothing">Clothing</option>
+              <option value="jewelry">Jewelry</option>
+              <option value="shoes">Shoes</option>
+              <option value="bags">Bags</option>
+              <option value="electronics">Electronics</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Image URL</label>
+            <input type="url" id="productImage">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Product</button>
+        </form>
+      </div>
+      
+      <div id="productsList"></div>
+    </div>
+
+    <!-- Blog Section -->
+    <div id="blogSection" class="admin-section">
+      <div class="admin-nav">
+        <button onclick="showBlogForm()" class="btn btn-success">Add Post</button>
+        <button onclick="loadPosts()" class="btn btn-outline">View Posts</button>
+      </div>
+      
+      <div id="blogForm" class="form-section">
+        <h2>Add Blog Post</h2>
+        <form onsubmit="savePost(event)">
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="postTitle" required>
+          </div>
+          <div class="form-group">
+            <label>Excerpt</label>
+            <textarea id="postExcerpt" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Content</label>
+            <textarea id="postContent" rows="8" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="postCategory">
+              <option value="Fashion Trends">Fashion Trends</option>
+              <option value="Style Guide">Style Guide</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Care Tips">Care Tips</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Image URL</label>
+            <input type="url" id="postImage" required>
+          </div>
+          <div class="form-group">
+            <label>Read Time</label>
+            <input type="text" id="readTime" placeholder="5 min read">
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" id="featured"> Featured Post</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Publish Post</button>
+        </form>
+      </div>
+      
+      <div id="postsList"></div>
+    </div>
+
+    <!-- Users Section -->
+    <div id="usersSection" class="admin-section">
+      <h2>Registered Users</h2>
+      <div id="usersList"></div>
+    </div>
+  </main>
 </div>
 
-<div id="adminArea" style="display:none;">
-<div class="admin-nav">
-<button id="addProductBtn" class="btn btn-success">Add New Product</button>
-<button id="viewProductsBtn" class="btn">View All Products</button>
-<button id="liveVisitorsBtn" class="btn">Live Visitors</button>
-<button id="logoutBtn" class="btn" style="background: #ef4444;">Logout</button>
-</div>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+const ADMIN_PASSWORD = 'Admin54321';
+let isInitialized = false;
 
-<div id="addProductSection">
-<h3>Add New Product</h3>
-<form id="productForm">
-<div class="form-group">
-<label for="name">Product Name *</label>
-<input id="name" type="text" placeholder="Enter product name" required>
-</div>
+// Wait for Firebase to initialize and sign in anonymously
+firebase.auth().onAuthStateChanged(async (user) => {
+  if (!isInitialized) {
+    isInitialized = true;
+    if (!user) {
+      try {
+        await firebase.auth().signInAnonymously();
+      } catch (error) {
+        console.log('Anonymous auth failed:', error);
+      }
+    }
+    if (localStorage.getItem('nolazAdminLoggedIn') === 'true') {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+    }
+  }
+});
 
-<div class="form-group">
-<label for="price">Price (₦) *</label>
-<input id="price" type="number" placeholder="Enter price" required>
-</div>
+async function login() {
+  const password = document.getElementById('adminPassword').value;
+  if (password === ADMIN_PASSWORD) {
+    try {
+      // Ensure we're authenticated
+      if (!firebase.auth().currentUser) {
+        await firebase.auth().signInAnonymously();
+      }
+      localStorage.setItem('nolazAdminLoggedIn', 'true');
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+    } catch (error) {
+      console.error('Auth error:', error);
+      alert('Authentication failed. Please try again.');
+    }
+  } else {
+    alert('Invalid password');
+  }
+}
 
-<div class="form-group">
-<label for="description">Description</label>
-<textarea id="description" placeholder="Enter product description"></textarea>
-</div>
+function logout() {
+  localStorage.removeItem('nolazAdminLoggedIn');
+  location.reload();
+}
 
-<div class="form-group">
-<label for="category">Category</label>
-<input id="category" type="text" placeholder="e.g., Shirts, Dresses, Accessories">
-</div>
+function showSection(section) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.admin-nav .btn').forEach(b => b.className = 'btn btn-outline');
+  
+  document.getElementById(section + 'Section').classList.add('active');
+  document.getElementById(section + 'Btn').className = 'btn btn-primary';
+  
+  if (section === 'users') loadUsers();
+}
 
-<div class="form-group">
-<label for="imageFile">Product Image</label>
-<div id="currentImage" style="display: none; margin-bottom: 8px;">
-<img id="currentImagePreview" src="" alt="Current image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
-<p style="margin: 4px 0; font-size: 14px; color: var(--muted);">Current image (leave empty to keep)</p>
-</div>
-<input id="imageFile" type="file" accept="image/*">
-<small style="color: var(--muted);">Recommended: 400x300px or larger, JPG/PNG format</small>
-</div>
+function showProductForm() {
+  document.getElementById('productForm').style.display = 'block';
+  document.getElementById('productsList').innerHTML = '';
+}
 
-<div class="form-group">
-<label for="status">Status</label>
-<select id="status">
-<option value="active">Active</option>
-<option value="inactive">Inactive</option>
-</select>
-</div>
+function showBlogForm() {
+  document.getElementById('blogForm').style.display = 'block';
+  document.getElementById('postsList').innerHTML = '';
+}
 
-<button type="submit" class="btn btn-success" style="width: 100%;">Add Product</button>
-</form>
-</div>
+async function saveProduct(e) {
+  e.preventDefault();
+  try {
+    const product = {
+      name: document.getElementById('productName').value,
+      price: parseInt(document.getElementById('productPrice').value),
+      description: document.getElementById('productDescription').value,
+      category: document.getElementById('productCategory').value,
+      image: document.getElementById('productImage').value || 'https://via.placeholder.com/300x200',
+      status: 'active',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    
+    await db.collection('products').add(product);
+    alert('Product saved successfully!');
+    e.target.reset();
+    loadProducts();
+  } catch (error) {
+    console.error('Error saving product:', error);
+    alert('Error saving product: ' + error.message);
+  }
+}
 
-<div id="viewProductsSection" style="display: none;">
-<h3>All Products</h3>
-<div id="productsTable">Loading products...</div>
-</div>
+async function savePost(e) {
+  e.preventDefault();
+  try {
+    const post = {
+      title: document.getElementById('postTitle').value,
+      excerpt: document.getElementById('postExcerpt').value,
+      content: document.getElementById('postContent').value,
+      category: document.getElementById('postCategory').value,
+      image: document.getElementById('postImage').value,
+      readTime: document.getElementById('readTime').value || '5 min read',
+      featured: document.getElementById('featured').checked,
+      author: 'Nolaz Team',
+      date: new Date().toISOString().split('T')[0],
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    
+    await db.collection('blogPosts').add(post);
+    alert('Post published successfully!');
+    e.target.reset();
+    loadPosts();
+  } catch (error) {
+    console.error('Error saving post:', error);
+    alert('Error saving post: ' + error.message);
+  }
+}
 
-<div id="liveVisitorsSection" style="display: none;">
-<h3>Live Visitors <span id="visitorCount" class="visitor-count">0</span></h3>
-<div class="visitor-stats">
-<div class="stat-card">
-<h4>Online Now</h4>
-<span id="onlineCount">0</span>
-</div>
-<div class="stat-card">
-<h4>Today's Visits</h4>
-<span id="todayCount">0</span>
-</div>
-<div class="stat-card">
-<h4>Total Visits</h4>
-<span id="totalCount">0</span>
-</div>
-</div>
-<div id="visitorsTable">Loading visitors...</div>
-</div>
+async function loadProducts() {
+  try {
+    document.getElementById('productForm').style.display = 'none';
+    document.getElementById('productsList').innerHTML = '<h3>Loading products...</h3>';
+    
+    const allProducts = [];
+    
+    // Load from Firebase Firestore
+    try {
+      const firestoreSnapshot = await db.collection('products').orderBy('createdAt', 'desc').get();
+      firestoreSnapshot.forEach(doc => {
+        const data = doc.data();
+        allProducts.push({
+          id: doc.id,
+          source: 'Firebase',
+          ...data
+        });
+      });
+    } catch (error) {
+      console.log('No Firebase products found');
+    }
+    
+    // Load from Google Sheets
+    try {
+      const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTU0jwvRkIPHLCwoOk0JC-01c3oP1bXTXB7zugyRW5ijxYlKTyQndXyTZ1h6M75fCqEGUySou8yOJ5C/pub?gid=0&single=true&output=csv';
+      const response = await fetch(SHEET_CSV_URL);
+      const csvData = await response.text();
+      const sheetProducts = csvToArray(csvData);
+      
+      sheetProducts.forEach(product => {
+        allProducts.push({
+          id: product.id || Date.now() + Math.random(),
+          source: 'Google Sheets',
+          name: product.name,
+          price: parseInt(product.price) || 0,
+          description: product.description,
+          category: product.category,
+          image: product.image,
+          status: product.status
+        });
+      });
+    } catch (error) {
+      console.log('No Google Sheets products found:', error);
+    }
+    
+    if (allProducts.length === 0) {
+      document.getElementById('productsList').innerHTML = '<h3>Products</h3><p>No products found. Add products via Firebase or Google Sheets.</p>';
+      return;
+    }
+    
+    document.getElementById('productsList').innerHTML = '<h3>All Products (' + allProducts.length + ')</h3>' + allProducts.map(p => `
+      <div class="item-card">
+        <img src="${p.image || 'https://via.placeholder.com/80'}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/80'">
+        <div class="item-info">
+          <h4>${p.name}</h4>
+          <p>₦${p.price?.toLocaleString()}</p>
+          <span class="category">${p.category}</span>
+          <small style="color: #666;">${p.source}</small>
+        </div>
+        ${p.source === 'Firebase' ? `<button onclick="deleteProduct('${p.id}')" class="btn btn-small" style="background: #ef4444; color: white;">Delete</button>` : '<span style="color: #666; font-size: 12px;">Sheet Product</span>'}
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading products:', error);
+    document.getElementById('productsList').innerHTML = '<h3>Products</h3><p>Error loading products: ' + error.message + '</p>';
+  }
+}
 
-<div id="status"></div>
+// CSV parser for Google Sheets data
+function csvToArray(csv) {
+  const lines = csv.trim().split('\n');
+  if (lines.length < 2) return [];
+  
+  const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+  
+  return lines.slice(1).map(line => {
+    const values = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        values.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    values.push(current.trim());
+    
+    const obj = {};
+    headers.forEach((header, index) => {
+      obj[header.toLowerCase()] = values[index] || '';
+    });
+    
+    return obj;
+  }).filter(item => item.name && item.name.trim() !== '');
+}
 
-<div style="background: #f8fafc; padding: 24px; border-radius: 12px; margin-top: 32px;">
-<h4 style="margin: 0 0 16px;">Setup Instructions</h4>
-<ol style="margin: 0; padding-left: 20px; color: var(--muted);">
-<li>Create a Google Sheet with columns: id, name, price, description, category, image, status</li>
-<li>Deploy the provided Google Apps Script as a web app</li>
-<li>Set up Cloudinary account for image hosting</li>
-<li>Update configuration in admin.js</li>
-<li>Publish your Google Sheet as CSV for the main store</li>
-</ol>
-</div>
-</div>
-</div>
+async function loadPosts() {
+  try {
+    document.getElementById('blogForm').style.display = 'none';
+    document.getElementById('postsList').innerHTML = '<h3>Loading posts...</h3>';
+    
+    const snapshot = await db.collection('blogPosts').orderBy('createdAt', 'desc').get();
+    const posts = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      posts.push({id: doc.id, ...data});
+    });
+    
+    if (posts.length === 0) {
+      document.getElementById('postsList').innerHTML = '<h3>Blog Posts</h3><p>No posts found. Create your first blog post.</p>';
+      return;
+    }
+    
+    document.getElementById('postsList').innerHTML = '<h3>Blog Posts (' + posts.length + ')</h3>' + posts.map(p => `
+      <div class="item-card">
+        <img src="${p.image}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/80'">
+        <div class="item-info">
+          <h4>${p.title}</h4>
+          <p>${p.excerpt}</p>
+          <span class="category">${p.category}</span>
+          ${p.featured ? '<span class="featured-badge">Featured</span>' : ''}
+        </div>
+        <button onclick="deletePost('${p.id}')" class="btn btn-small" style="background: #ef4444; color: white;">Delete</button>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading posts:', error);
+    document.getElementById('postsList').innerHTML = '<h3>Blog Posts</h3><p>Error loading posts: ' + error.message + '</p>';
+  }
+}
 
-<script src="security.js"></script>
-<script src="admin.js"></script>
+async function loadUsers() {
+  try {
+    document.getElementById('usersList').innerHTML = '<p>Loading users...</p>';
+    
+    const allUsers = [];
+    
+    // Get users from Firestore
+    try {
+      const firestoreSnapshot = await db.collection('users').get();
+      firestoreSnapshot.forEach(doc => {
+        const data = doc.data();
+        allUsers.push({
+          id: doc.id,
+          source: 'Firestore',
+          ...data
+        });
+      });
+    } catch (error) {
+      console.log('No Firestore users found');
+    }
+    
+    // Get users who signed up via Firebase Auth (from simple-auth)
+    try {
+      const authSnapshot = await db.collection('authUsers').get();
+      authSnapshot.forEach(doc => {
+        const data = doc.data();
+        allUsers.push({
+          id: doc.id,
+          source: 'Auth',
+          ...data
+        });
+      });
+    } catch (error) {
+      console.log('No auth users collection found');
+    }
+    
+    // Get newsletter subscribers
+    try {
+      const newsletterSnapshot = await db.collection('newsletter').get();
+      newsletterSnapshot.forEach(doc => {
+        const data = doc.data();
+        allUsers.push({
+          id: doc.id,
+          source: 'Newsletter',
+          email: data.email,
+          name: 'Newsletter Subscriber',
+          subscribedAt: data.subscribedAt
+        });
+      });
+    } catch (error) {
+      console.log('No newsletter subscribers found');
+    }
+    
+    if (allUsers.length === 0) {
+      document.getElementById('usersList').innerHTML = '<p>No users found. Users will appear here when they sign up.</p>';
+      return;
+    }
+    
+    document.getElementById('usersList').innerHTML = '<h3>All Users (' + allUsers.length + ')</h3>' + allUsers.map(u => `
+      <div class="item-card">
+        <div class="item-info">
+          <h4>${u.name || u.displayName || 'Unknown User'}</h4>
+          <p>${u.email || 'No email'}</p>
+          <span class="category">${u.source}</span>
+          ${u.isAdmin ? '<span class="featured-badge">Admin</span>' : ''}
+          ${u.subscribedAt ? '<small>Subscribed: ' + new Date(u.subscribedAt).toLocaleDateString() + '</small>' : ''}
+        </div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading users:', error);
+    document.getElementById('usersList').innerHTML = '<p>Error loading users: ' + error.message + '</p>';
+  }
+}
+
+async function deleteProduct(id) {
+  if (confirm('Are you sure you want to delete this product?')) {
+    try {
+      await db.collection('products').doc(id).delete();
+      alert('Product deleted successfully!');
+      loadProducts();
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      alert('Error deleting product: ' + error.message);
+    }
+  }
+}
+
+async function deletePost(id) {
+  if (confirm('Are you sure you want to delete this blog post?')) {
+    try {
+      await db.collection('blogPosts').doc(id).delete();
+      alert('Post deleted successfully!');
+      loadPosts();
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      alert('Error deleting post: ' + error.message);
+    }
+  }
+}
+
+
+// Enter key support for login
+document.addEventListener('DOMContentLoaded', function() {
+  const passwordInput = document.getElementById('adminPassword');
+  if (passwordInput) {
+    passwordInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        login();
+      }
+    });
+  }
+});
+</script>
 </body>
 </html>

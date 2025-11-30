@@ -55,6 +55,12 @@ class ShoppingCart {
     if (clearBtn) {
       clearBtn.addEventListener('click', () => this.clearCart());
     }
+
+    // Pay Now button
+    const payNowBtn = document.getElementById('payNowBtn');
+    if (payNowBtn) {
+      payNowBtn.addEventListener('click', () => this.payNow());
+    }
   }
 
   addItem(product) {
@@ -201,6 +207,91 @@ Please confirm my order and provide payment details.`;
 
     const whatsappUrl = `https://wa.me/2349046456469?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
+  }
+
+  payNow() {
+    if (this.items.length === 0) {
+      alert('Your cart is empty!');
+      return;
+    }
+    
+    this.showPaymentForm();
+  }
+
+  showPaymentForm() {
+    const total = this.getTotal();
+    const formHTML = `
+      <div id="paymentFormModal" class="modal" style="display: block;">
+        <div class="modal-content flw-payment-form">
+          <div class="flw-form-header">
+            <h3>Complete Your Payment</h3>
+            <p>Secure checkout powered by Flutterwave</p>
+            <span class="close" onclick="cart.hidePaymentForm()">&times;</span>
+          </div>
+          <div class="flw-form-body">
+            <div class="flw-amount-display">
+              <div class="flw-amount-label">Total Amount</div>
+              <div class="flw-amount-value">₦${total.toLocaleString()}</div>
+            </div>
+            <form id="customerInfoForm">
+              <div class="flw-form-group">
+                <label for="customerName">Full Name *</label>
+                <input type="text" id="customerName" name="customerName" placeholder="Enter your full name" required>
+              </div>
+              <div class="flw-form-group">
+                <label for="customerEmail">Email Address *</label>
+                <input type="email" id="customerEmail" name="customerEmail" placeholder="Enter your email address" required>
+              </div>
+              <div class="flw-form-group">
+                <label for="customerPhone">Phone Number *</label>
+                <input type="tel" id="customerPhone" name="customerPhone" placeholder="Enter your phone number" required>
+              </div>
+              <div class="flw-security-info">
+                <div class="flw-security-icon">🔒</div>
+                <p class="flw-security-text">Your payment information is secure and encrypted</p>
+              </div>
+              <button type="submit" class="flw-submit-btn">Proceed to Payment</button>
+            </form>
+          </div>
+          <div class="flw-form-footer">
+            <p class="flw-powered-by">Powered by <a href="https://flutterwave.com" target="_blank">Flutterwave</a></p>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', formHTML);
+    document.body.style.overflow = 'hidden';
+    
+    // Bind form submit event
+    const form = document.getElementById('customerInfoForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.processPayment();
+    });
+  }
+
+  hidePaymentForm() {
+    const modal = document.getElementById('paymentFormModal');
+    if (modal) {
+      modal.remove();
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  processPayment() {
+    const name = document.getElementById('customerName').value.trim();
+    const email = document.getElementById('customerEmail').value.trim();
+    const phone = document.getElementById('customerPhone').value.trim();
+    
+    if (!name || !email || !phone) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+    
+    const total = this.getTotal();
+    this.hidePaymentForm();
+    makePayment(total, email, name, phone);
   }
 
   showAddedNotification(productName) {

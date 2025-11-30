@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nolaz Store - Fashion Blog</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+<div class="header-content">
+<div class="brand">
+<h1>Nolaz Store</h1>
+</div>
+<button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+<nav class="main-nav" id="mainNav">
+<a href="index.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="blog.html" class="active">Blog</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+</nav>
+<div class="header-actions">
+<button id="cartBtn" class="cart-btn">
+Cart (<span id="cartCount">0</span>)
+</button>
+</div>
+</div>
+</header>
+
+<main class="container">
+<section class="blog-hero">
+<div class="blog-hero-content">
+<h1>Fashion & Style Blog</h1>
+<p>Discover the latest trends, styling tips, and fashion insights from our curated collection</p>
+</div>
+</section>
+
+<section class="blog-featured">
+<div class="section-header">
+<h2 class="section-title">Featured Article</h2>
+</div>
+<article class="featured-post">
+<div class="featured-post-image">
+<img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800&h=400&fit=crop" alt="Summer Fashion Trends">
+<div class="post-category">Fashion Trends</div>
+</div>
+<div class="featured-post-content">
+<h2>Summer 2024: The Ultimate Fashion Guide</h2>
+<p class="post-excerpt">Discover the hottest trends this summer season. From vibrant colors to minimalist designs, we've curated the perfect pieces to elevate your wardrobe.</p>
+<div class="post-meta">
+<span class="post-date">December 15, 2024</span>
+<span class="post-author">By Nolaz Team</span>
+<span class="read-time">5 min read</span>
+</div>
+<a href="javascript:void(0)" onclick="showFullPost(this)" class="read-more-btn">Read Full Article</a>
+</div>
+</article>
+</section>
+
+<section class="blog-grid-section">
+<div class="blog-sidebar">
+<div class="sidebar-widget">
+<h3>Categories</h3>
+<ul class="category-list">
+<li><a href="javascript:void(0)" onclick="filterByCategory('Fashion Trends')">Fashion Trends <span id="fashionCount">(0)</span></a></li>
+<li><a href="javascript:void(0)" onclick="filterByCategory('Style Guide')">Style Guide <span id="styleCount">(0)</span></a></li>
+<li><a href="javascript:void(0)" onclick="filterByCategory('Accessories')">Accessories <span id="accessoriesCount">(0)</span></a></li>
+<li><a href="javascript:void(0)" onclick="filterByCategory('Care Tips')">Care Tips <span id="careCount">(0)</span></a></li>
+<li><a href="javascript:void(0)" onclick="showAllPosts()">All Posts <span id="allCount">(0)</span></a></li>
+</ul>
+</div>
+<div class="sidebar-widget">
+<h3>Popular Posts</h3>
+<div class="popular-posts">
+<article class="mini-post">
+<img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=80&h=80&fit=crop" alt="Jewelry Guide">
+<div class="mini-post-content">
+<h4>Essential Jewelry for Every Outfit</h4>
+<span class="mini-date">Dec 10, 2024</span>
+</div>
+</article>
+<article class="mini-post">
+<img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=80&h=80&fit=crop" alt="Shoe Trends">
+<div class="mini-post-content">
+<h4>Shoe Trends That Never Go Out of Style</h4>
+<span class="mini-date">Dec 8, 2024</span>
+</div>
+</article>
+<article class="mini-post">
+<img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=80&h=80&fit=crop" alt="Bag Collection">
+<div class="mini-post-content">
+<h4>Building Your Perfect Bag Collection</h4>
+<span class="mini-date">Dec 5, 2024</span>
+</div>
+</article>
+</div>
+</div>
+</div>
+
+<div class="blog-posts">
+<div class="section-header">
+<h2 class="section-title">Latest Articles</h2>
+</div>
+<div class="posts-grid">
+<article class="blog-post">
+<div class="post-image">
+<img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&h=250&fit=crop" alt="Winter Fashion">
+<div class="post-category">Style Guide</div>
+</div>
+<div class="post-content">
+<h3>Winter Wardrobe Essentials</h3>
+<p>Stay warm and stylish this winter with our curated selection of must-have pieces.</p>
+<div class="post-meta">
+<span class="post-date">Dec 12, 2024</span>
+<span class="read-time">3 min read</span>
+</div>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-post">
+<div class="post-image">
+<img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=250&fit=crop" alt="Accessories">
+<div class="post-category">Accessories</div>
+</div>
+<div class="post-content">
+<h3>How to Mix and Match Accessories</h3>
+<p>Learn the art of accessorizing to transform any basic outfit into a fashion statement.</p>
+<div class="post-meta">
+<span class="post-date">Dec 10, 2024</span>
+<span class="read-time">4 min read</span>
+</div>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-post">
+<div class="post-image">
+<img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=250&fit=crop" alt="Color Coordination">
+<div class="post-category">Fashion Tips</div>
+</div>
+<div class="post-content">
+<h3>Color Coordination Made Simple</h3>
+<p>Master the basics of color theory to create stunning outfits that turn heads.</p>
+<div class="post-meta">
+<span class="post-date">Dec 8, 2024</span>
+<span class="read-time">6 min read</span>
+</div>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-post">
+<div class="post-image">
+<img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=250&fit=crop" alt="Tech Fashion">
+<div class="post-category">Innovation</div>
+</div>
+<div class="post-content">
+<h3>Tech Meets Fashion: The Future is Here</h3>
+<p>Explore how technology is revolutionizing the fashion industry and our shopping experience.</p>
+<div class="post-meta">
+<span class="post-date">Dec 5, 2024</span>
+<span class="read-time">5 min read</span>
+</div>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-post">
+<div class="post-image">
+<img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=250&fit=crop" alt="Sustainable Fashion">
+<div class="post-category">Sustainability</div>
+</div>
+<div class="post-content">
+<h3>Sustainable Fashion: Style with Purpose</h3>
+<p>Discover how to build an eco-friendly wardrobe without compromising on style.</p>
+<div class="post-meta">
+<span class="post-date">Dec 3, 2024</span>
+<span class="read-time">7 min read</span>
+</div>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-post">
+<div class="post-image">
+<img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=250&fit=crop" alt="Shoe Care">
+<div class="post-category">Care Tips</div>
+</div>
+<div class="post-content">
+<h3>Shoe Care 101: Make Them Last</h3>
+<p>Learn professional tips to keep your favorite shoes looking brand new for years.</p>
+<div class="post-meta">
+<span class="post-date">Dec 1, 2024</span>
+<span class="read-time">4 min read</span>
+</div>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+</div>
+</div>
+</section>
+
+<section class="newsletter-signup">
+<div class="newsletter-content">
+<h2>Stay Updated</h2>
+<p>Get the latest fashion tips and exclusive offers delivered to your inbox</p>
+<form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+<input type="email" id="newsletterEmail" placeholder="Enter your email address" required>
+<button type="submit" class="btn btn-primary">Subscribe</button>
+</form>
+</div>
+</section>
+</main>
+
+<footer class="site-footer">
+<div class="footer-content">
+<div class="footer-section">
+<h4>Nolaz Store</h4>
+<p>Contemporary fashion for the modern lifestyle.</p>
+</div>
+<div class="footer-section">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="shop.html">Shop</a></li>
+<li><a href="blog.html">Blog</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</div>
+<div class="footer-section">
+<h4>Contact</h4>
+<p>WhatsApp: +234 904 645 6469</p>
+<p>Email: hello@nolazstore.com</p>
+</div>
+<div class="footer-section">
+<h4>Follow Us</h4>
+<div class="social-links">
+<a href="#" class="social-link" aria-label="Facebook">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+</svg>
+</a>
+<a href="#" class="social-link" aria-label="Instagram">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+</svg>
+</a>
+<a href="#" class="social-link" aria-label="TikTok">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+<path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+</svg>
+</a>
+<a href="#" class="social-link" aria-label="Twitter X">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+<path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+</svg>
+</a>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2024 Nolaz Store — Built with ❤️</p>
+</div>
+</footer>
+
+<div id="cartModal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<h3>Shopping Cart</h3>
+<span class="close">&times;</span>
+</div>
+<div id="cartItems"></div>
+<div class="cart-footer">
+<div class="cart-total">
+<strong>Total: ₦<span id="cartTotal">0</span></strong>
+</div>
+<button id="payNowBtn" class="btn btn-primary" style="display: block !important; visibility: visible !important; opacity: 1 !important; width: 100% !important; margin-bottom: 8px !important;">Pay Now</button>
+<button id="checkoutBtn" class="btn btn-success">Order via WhatsApp</button>
+<button id="clearCartBtn" class="btn" style="background: #ef4444;">Clear Cart</button>
+</div>
+</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="simple-auth.js"></script>
+
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script src="flutterwave-payment.js"></script>
+<script>
+// Load blog posts from Firebase
+async function loadBlogPosts() {
+  try {
+    const snapshot = await db.collection('blogPosts').orderBy('createdAt', 'desc').get();
+    const posts = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      posts.push({id: doc.id, ...data});
+    });
+    
+    // Update featured post
+    const featuredPost = posts.find(p => p.featured);
+    if (featuredPost) {
+      document.querySelector('.featured-post-image img').src = featuredPost.image;
+      document.querySelector('.featured-post-content h2').textContent = featuredPost.title;
+      document.querySelector('.post-excerpt').textContent = featuredPost.excerpt;
+      document.querySelector('.post-date').textContent = featuredPost.date;
+      document.querySelector('.read-time').textContent = featuredPost.readTime;
+    }
+    
+    // Store posts globally and update display
+    allPosts = posts;
+    updateCategoryCounts();
+    displayPosts(posts);
+  } catch (error) {
+    console.error('Error loading blog posts:', error);
+  }
+}
+
+let allPosts = [];
+let currentFilter = null;
+
+// Load posts when Firebase is ready
+firebase.auth().onAuthStateChanged(() => {
+  loadBlogPosts();
+});
+
+function filterByCategory(category) {
+  currentFilter = category;
+  const filteredPosts = allPosts.filter(post => post.category === category);
+  displayPosts(filteredPosts);
+}
+
+function showAllPosts() {
+  currentFilter = null;
+  displayPosts(allPosts);
+}
+
+function displayPosts(posts) {
+  const postsGrid = document.querySelector('.posts-grid');
+  if (postsGrid) {
+    postsGrid.innerHTML = posts.slice(0, 6).map(post => `
+      <article class="blog-post">
+        <div class="post-image">
+          <img src="${post.image}" alt="${post.title}">
+          <div class="post-category">${post.category}</div>
+        </div>
+        <div class="post-content">
+          <h3>${post.title}</h3>
+          <p>${post.excerpt}</p>
+          <div class="post-meta">
+            <span class="post-date">${post.date}</span>
+            <span class="read-time">${post.readTime}</span>
+          </div>
+          <a href="javascript:void(0)" onclick="showFullPost(this)" class="read-more">Read More →</a>
+        </div>
+      </article>
+    `).join('');
+  }
+}
+
+function updateCategoryCounts() {
+  const counts = {
+    'Fashion Trends': 0,
+    'Style Guide': 0,
+    'Accessories': 0,
+    'Care Tips': 0
+  };
+  
+  allPosts.forEach(post => {
+    if (counts.hasOwnProperty(post.category)) {
+      counts[post.category]++;
+    }
+  });
+  
+  document.getElementById('fashionCount').textContent = `(${counts['Fashion Trends']})`;
+  document.getElementById('styleCount').textContent = `(${counts['Style Guide']})`;
+  document.getElementById('accessoriesCount').textContent = `(${counts['Accessories']})`;
+  document.getElementById('careCount').textContent = `(${counts['Care Tips']})`;
+  document.getElementById('allCount').textContent = `(${allPosts.length})`;
+}
+
+function showFullPost(element) {
+  const postElement = element.closest('.blog-post');
+  const title = postElement.querySelector('h3').textContent;
+  const post = allPosts.find(p => p.title === title);
+  
+  if (post) {
+    alert(`Full Article: ${post.title}\n\n${post.content || post.excerpt}`);
+  }
+}
+
+function subscribeNewsletter(event) {
+  event.preventDefault();
+  const email = document.getElementById('newsletterEmail').value;
+  
+  // Save to Firebase
+  if (db) {
+    db.collection('newsletter').add({
+      email: email,
+      subscribedAt: new Date().toISOString()
+    }).then(() => {
+      alert('Thank you for subscribing to our newsletter!');
+      document.getElementById('newsletterEmail').value = '';
+    }).catch(error => {
+      console.error('Error:', error);
+      alert('Subscription successful! Thank you.');
+      document.getElementById('newsletterEmail').value = '';
+    });
+  } else {
+    alert('Thank you for subscribing!');
+    document.getElementById('newsletterEmail').value = '';
+  }
+}
+</script>
+<script src="visitor-tracker.js"></script>
+<script src="mobile.js"></script>
+<script src="cart.js"></script>
+</body>
+</html>

@@ -34,30 +34,54 @@ function getSampleProducts() {
   ];
 }
 
-// Load featured products (first 6 products)
+// Load featured products from both Firebase and Google Sheets
 async function loadFeaturedProducts() {
   const featuredEl = document.getElementById('featuredProducts') || document.getElementById('products');
   
   featuredEl.innerHTML = '<p>Loading featured products...</p>';
   
-  let activeProducts = [];
+  let allProducts = [];
   
-  // Try to load from Google Sheets first
+  // Load from Firebase Firestore
+  try {
+    if (window.db) {
+      const firestoreSnapshot = await db.collection('products').get();
+      firestoreSnapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.name && data.price && data.status !== 'inactive') {
+          allProducts.push({
+            id: doc.id,
+            source: 'Firebase',
+            ...data
+          });
+        }
+      });
+      console.log('Products loaded from Firebase:', allProducts.length);
+    }
+  } catch (error) {
+    console.warn('Failed to load from Firebase:', error);
+  }
+  
+  // Load from Google Sheets
   if (SHEET_CSV_URL && !SHEET_CSV_URL.includes('REPLACE_WITH')) {
     try {
       const response = await fetch(SHEET_CSV_URL);
       
       if (response.ok) {
         const csvData = await response.text();
-        const products = csvToArray(csvData);
+        const sheetProducts = csvToArray(csvData);
         
-        activeProducts = products.filter(product => 
-          product.name && 
-          product.price && 
-          (product.status || 'active').toLowerCase() !== 'inactive'
-        ).slice(0, 6); // Get first 6 products
+        sheetProducts.forEach(product => {
+          if (product.name && product.price && (product.status || 'active').toLowerCase() !== 'inactive') {
+            allProducts.push({
+              id: product.id || Date.now() + Math.random(),
+              source: 'Google Sheets',
+              ...product
+            });
+          }
+        });
         
-        console.log('Featured products loaded from Google Sheets:', activeProducts.length);
+        console.log('Products loaded from Google Sheets:', sheetProducts.length);
       }
     } catch (error) {
       console.warn('Failed to load from Google Sheets:', error);
@@ -65,22 +89,26 @@ async function loadFeaturedProducts() {
   }
   
   // If no products loaded, use sample products
-  if (activeProducts.length === 0) {
-    activeProducts = getSampleProducts();
-    console.log('Using sample featured products:', activeProducts.length);
+  if (allProducts.length === 0) {
+    allProducts = getSampleProducts();
+    console.log('Using sample featured products:', allProducts.length);
   }
   
-  window.productsData = activeProducts;
+  // Take first 6 products for featured section
+  const featuredProducts = allProducts.slice(0, 6);
+  window.productsData = allProducts; // Store all products globally
   
-  if (activeProducts.length === 0) {
+  if (featuredProducts.length === 0) {
     featuredEl.innerHTML = '<p>No featured products available</p>';
     return;
   }
   
   featuredEl.innerHTML = '';
-  activeProducts.forEach(product => {
+  featuredProducts.forEach(product => {
     featuredEl.appendChild(createProductCard(product));
   });
+  
+  console.log('Total products loaded:', allProducts.length, 'Featured:', featuredProducts.length);
 }
 
 // Parse CSV (same as main script)
@@ -192,80 +220,14 @@ Please help me place an order.`;
   };
 }
 
-// Initialize when page loads
-let slideIndex = 1;
-let slideIndex2 = 1;
-
-window.addEventListener('DOMContentLoaded', () => {
-  loadFeaturedProducts();
-  initializeSlider();
-});
-
-// Initialize image sliders
-function initializeSlider() {
-  let slideIndex = 1;
-  let slideIndex2 = 1;
-  
-  showSlide(slideIndex);
-  showSlide2(slideIndex2);
-  
-  // Auto slide every 4 seconds for first slider
-  setInterval(() => {
-    slideIndex++;
-    if (slideIndex > 3) slideIndex = 1;
-    showSlide(slideIndex);
-  }, 4000);
-  
-  // Auto slide every 5 seconds for second slider
-  setInterval(() => {
-    slideIndex2++;
-    if (slideIndex2 > 3) slideIndex2 = 1;
-    showSlide2(slideIndex2);
-  }, 5000);
-}
-
-function currentSlide(n) {
-  showSlide(slideIndex = n);
-}
-
-function currentSlide2(n) {
-  showSlide2(slideIndex2 = n);
-}
-
-function showSlide(n) {
-  const sliders = document.querySelectorAll('.slider-section');
-  const slides = sliders[0]?.querySelectorAll('.slide') || [];
-  const dots = sliders[0]?.querySelectorAll('.nav-dot') || [];
-  
-  if (n > slides.length) slideIndex = 1;
-  if (n < 1) slideIndex = slides.length;
-  
-  slides.forEach(slide => slide.classList.remove('active'));
-  dots.forEach(dot => dot.classList.remove('active'));
-  
-  if (slides[slideIndex - 1]) {
-    slides[slideIndex - 1].classList.add('active');
-  }
-  if (dots[slideIndex - 1]) {
-    dots[slideIndex - 1].classList.add('active');
-  }
-}
-
-function showSlide2(n) {
-  const sliders = document.querySelectorAll('.slider-section');
-  const slides = sliders[1]?.querySelectorAll('.slide') || [];
-  const dots = sliders[1]?.querySelectorAll('.nav-dot') || [];
-  
-  if (n > slides.length) slideIndex2 = 1;
-  if (n < 1) slideIndex2 = slides.length;
-  
-  slides.forEach(slide => slide.classList.remove('active'));
-  dots.forEach(dot => dot.classList.remove('active'));
-  
-  if (slides[slideIndex2 - 1]) {
-    slides[slideIndex2 - 1].classList.add('active');
-  }
-  if (dots[slideIndex2 - 1]) {
-    dots[slideIndex2 - 1].classList.add('active');
-  }
+// Wait for Firebase to initialize before loading products
+if (window.firebase) {
+  firebase.auth().onAuthStateChanged(() => {
+    loadFeaturedProducts();
+  });
+} else {
+  // Fallback if Firebase not available
+  window.addEventListener('DOMContentLoaded', () => {
+    loadFeaturedProducts();
+  });
 }
