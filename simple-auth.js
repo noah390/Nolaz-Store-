@@ -10,6 +10,9 @@ class SimpleAuth {
       return;
     }
 
+    // Immediately hide all content until authenticated
+    document.body.style.display = 'none';
+
     // Wait for Firebase to initialize
     if (typeof firebase === 'undefined' || !firebase.auth) {
       setTimeout(() => this.init(), 100);
@@ -27,6 +30,13 @@ class SimpleAuth {
         this.showAuthScreen();
       }
     });
+
+    // Also check immediately - if no user, show auth screen
+    setTimeout(() => {
+      if (!firebase.auth().currentUser) {
+        this.showAuthScreen();
+      }
+    }, 1000);
   }
 
   showAuthScreen() {
@@ -72,6 +82,8 @@ class SimpleAuth {
         </div>
       </div>
     `;
+
+    document.body.style.display = 'block';
 
     // Bind events
     document.getElementById('signupForm').onsubmit = (e) => this.signup(e);
@@ -227,6 +239,7 @@ class SimpleAuth {
     if (document.body.innerHTML.includes('Welcome to Nolaz Store')) {
       location.reload();
     } else {
+      document.body.style.display = 'block';
       this.addLogoutButton();
       this.showUserWelcome();
     }
