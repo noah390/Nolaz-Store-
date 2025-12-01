@@ -2874,6 +2874,7 @@ img {
     height: 250px;
   }
   
+<<<<<<< HEAD
   /* Mobile Touch Targets */
   .btn, button, .cart-btn, .nav-dot, .mobile-menu-toggle {
     min-height: 44px;
@@ -2899,6 +2900,8 @@ img {
     margin-bottom: var(--spacing-lg);
   }
   
+=======
+>>>>>>> b8b7aab8030d883b3943e9dfd8361ccc59018302
   .search-container {
     max-width: 100%;
   }
@@ -2983,6 +2986,7 @@ img {
   }
   
   .header-actions {
+<<<<<<< HEAD
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
@@ -2991,6 +2995,10 @@ img {
   
   #userGreeting {
     display: none !important;
+=======
+    gap: 8px;
+    flex-wrap: wrap;
+>>>>>>> b8b7aab8030d883b3943e9dfd8361ccc59018302
   }
   
   .search-container {
